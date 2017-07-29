@@ -1,0 +1,307 @@
+
+
+-- MINI_L grammar productions
+
+Program -> program id ; Block endprogram
+Block -> Declaration ; Declarations beginprogram Statement ; Statements
+Declaration -> id Ids : Type
+Ids -> @
+Type -> integer
+Declarations -> Declaration ; Declarations
+Declaration -> id Ids : Type
+Ids -> , id Ids
+Ids -> , id Ids
+Ids -> @
+Type -> integer
+Declarations -> Declaration ; Declarations
+Declaration -> id Ids : Type
+Ids -> , id Ids
+Ids -> , id Ids
+Ids -> @
+Type -> integer
+Declarations -> Declaration ; Declarations
+Declaration -> id Ids : Type
+Ids -> @
+Type -> array ( num ) of integer
+Declarations -> @
+Statement -> read Vars
+Vars -> Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> @
+Statements -> Statement ; Statements
+Statement -> if BExp then Statement ; Statements Else elseif
+BExp -> RExp BExp_1
+RExp -> RExp_1
+RExp_1 -> Exp Comp Exp
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Comp -> <
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+BExp_1 -> and RExp BExp_1
+RExp -> RExp_1
+RExp_1 -> Exp Comp Exp
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Comp -> <=
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+BExp_1 -> and RExp BExp_1
+RExp -> RExp_1
+RExp_1 -> Exp Comp Exp
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Comp -> >=
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> num
+Term_1 -> @
+Exp_1 -> @
+BExp_1 -> @
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> Statement ; Statements
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> Statement ; Statements
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> Statement ; Statements
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> Statement ; Statements
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> @
+Else -> else Statement ; Statements
+Statement -> while BExp loop Statement ; Statements endloop
+BExp -> RExp BExp_1
+RExp -> RExp_1
+RExp_1 -> Exp Comp Exp
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Comp -> >
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+BExp_1 -> or RExp BExp_1
+RExp -> RExp_1
+RExp_1 -> false
+BExp_1 -> @
+Statement -> Var := Exp
+Var -> id Var_1
+Var_1 -> @
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> num
+Term_1 -> @
+Exp_1 -> + Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> - Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Term_1 -> * Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> / Factor Term_1
+Factor -> num
+Term_1 -> @
+Exp_1 -> + Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Statements -> Statement ; Statements
+Statement -> write Vars
+Vars -> Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> @
+Statements -> @
+Statements -> @
+Statements -> Statement ; Statements
+Statement -> write Vars
+Vars -> Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Vars_1 -> , Var Vars_1
+Var -> id Var_1
+Var_1 -> ( Exp )
+Exp -> Term Exp_1
+Term -> Factor Term_1
+Factor -> Var
+Var -> id Var_1
+Var_1 -> @
+Term_1 -> @
+Exp_1 -> @
+Vars_1 -> @
+Statements -> @

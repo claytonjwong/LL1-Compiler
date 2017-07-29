@@ -1,0 +1,28 @@
+-- test4.min
+-- prints out the fibonacci sequence
+
+program test4;
+
+m : integer;
+n : integer;
+temp : integer;
+k : integer;
+
+beginprogram
+
+m := 1;
+n := 1;
+
+read k;
+
+write m,n;
+
+while k > 0 loop
+	temp := m;
+	m := m + n;
+	n := temp;
+	write m;
+	k := k - 1;
+endloop;
+
+endprogram

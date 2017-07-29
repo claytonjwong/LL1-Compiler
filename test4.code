@@ -1,0 +1,27 @@
+.	m
+.	n
+.	temp
+.	k
+.	p0
+.	t0
+.	t1
+: Start
+=	m, 1
+=	n, 1
+.<	k
+.>	m
+.>	n
+: L0
+>	p0, k, 0
+?:=	L1, p0
+:=	L2
+: L1
+=	temp, m
++	t0, m, n
+=	m, t0
+=	n, temp
+.>	m
+-	t1, k, 1
+=	k, t1
+:=	L0
+: L2

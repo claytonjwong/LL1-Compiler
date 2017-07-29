@@ -1,0 +1,31 @@
+--  test2.min
+
+program test2;
+
+  n : integer;
+  i, j, k : integer;
+  x, y, z : integer;
+
+  t : array (100) of integer;
+
+beginprogram	-- main program 
+  
+  read i,j,x,y;
+  
+  if i<j and j<=n and i>=0 then
+    t(i) := i;
+    t(j) := j;
+    k := t(i);
+    t(i) := t(j);
+    t(j) := t(i);
+  else
+     while  x > y or false loop
+      x := (1+y - x)*n / 987 + x;
+      write x,y;
+      y := y + 1;
+    endloop;	
+  endif;
+
+  write i,j,x,y,t(i),t(j);
+   
+endprogram

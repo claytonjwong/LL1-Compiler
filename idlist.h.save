@@ -1,0 +1,14 @@
+typedef struct idlist_node
+{
+	char* idname;
+	struct idlist_node* next;
+} IdListNode;
+
+typedef struct
+{
+	IdListNode* head;
+} IdList;
+
+IdList* CreateList();
+void InsertToList(IdList** list, char* toInsert);
+void AppendToList(IdList** list, IdList* toAppend);

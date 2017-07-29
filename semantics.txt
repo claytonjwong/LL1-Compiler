@@ -1,0 +1,365 @@
+TODO: find out why the fuck "read" and "write" are giving problems
+
+
+TODO: make sure semantic rules are correct for BExp and others
+TODO: make semantic rules for Exp
+
+
+0 Program -> program id ; Block endprogram
+{
+	Program.code = Block.code
+	{ output Program.code to file "id.name".code }
+}
+
+
+
+1 Block -> Declaration ; Declarations beginprogram Statement ; Statements
+{
+	foreach id in symtab
+	{
+		if (id.type == 'a')
+			Block.code ||= gen('.[]' id.name ',' id.length)
+		else
+			Block.code ||= gen('.' id.name)
+	}
+	
+	foreach temp_pred in temp_pred_list
+		Block.code ||= gen('.' temp_pred.name)
+	
+	foreach temp_val in temp_val_list
+		Block.code ||= gen('.' temp_val.name)
+
+	Block.code ||= gen(':' 'Start') ||
+		     Statement.code ||
+		     Statements.code
+}
+
+
+
+2 Declarations1 -> Declaration ; Declarations2
+3 Declarations -> @
+
+
+
+4 Declaration -> id Ids : Type
+{
+	Insert_To_list(Ids.list, id.name)
+	
+	foreach id in Ids
+	{
+		id.dtype = Type.dtype
+		id.length = Type.length
+		insert_symtab(id.name, id.dtype, id.length)
+	}
+}
+
+
+
+5 Ids -> , id Ids2
+{
+	Insert_To_List(Ids.list, id.name)
+	Append_To_List(Ids.list, Ids2.list)
+}
+6 Ids -> @
+
+
+
+7 Type -> integer
+{
+	Type.dtype = 'i'
+	Type.length = 1;
+}
+
+
+8 Type -> array ( num ) of integer
+{
+	Type.dtype = 'a'
+	Type.length = num.val
+}
+
+
+
+9 Statements1 -> Statement ; Statements2
+{
+	Statements1.code = Statement.code ||
+			   Statements.code
+}
+10 Statements -> @
+
+
+
+11 Statement -> Var := Exp
+{
+	Statement.code =
+			 Exp.code ||
+	
+	if (Var.dtype == array)
+	{
+		gen('[]=' Var.place ',' Var.index ',' Exp.place)
+	}
+	else
+	{
+		gen('=' Var.place ',' Exp.place)
+	}
+			 
+}
+12 Statement1 -> if BExp then Statement2 ; Statements Else endif
+{
+	Statement2.begin = newlabel()
+	Else.begin = newlabel()
+	Else.after = newlabel()
+	Statement1.code = BExp.code ||
+			  gen('?:=' Statement2.begin ',' BExp.place) ||
+			  gen(':=' Else.begin) ||
+			  gen(':' Statement2.begin) ||
+			  Statement2.code ||
+			  Statements.code ||
+			  gen(':=' Else.after) ||
+			  gen(':' Else.begin) ||
+			  Else.code ||
+			  gen(':' Else.after)
+}
+13 Statement1 -> while BExp loop Statement2 ; Statements endloop
+{
+	Statement1.begin = newlabel()
+	Statement2.begin = newlabel()
+	Statement1.after = newlabel()
+	Statement1.code = gen(':' Statement1.begin) ||
+			  BExp.code ||
+			  gen('?:=' Statement2.begin ',' BExp.place) ||
+			  gen(':=' Statement1.after) ||
+			  gen(':' Statement1.begin) ||
+			  Statement2.code ||
+			  Statements.code ||
+			  gen('goto' Statement1.begin) ||
+			  gen('label' Statement1.after)			  
+}
+14 Statement -> read Vars
+{
+	foreach id in Vars.list
+	{
+		if (id.type == array)
+			gen('.<[]' id.name ',' id.index)
+		else
+			gen('.<' id.name)
+	}
+}
+15 Statement -> write Vars
+{
+	foreach id in Vars.list
+	{
+		if (id.type == array)
+			gen('.>[]' id.name ',' id.length)
+		else
+			gen('.>' id.name)
+	}
+}
+
+
+
+16 Else -> else Statement ; Statements
+{
+	Else.code = Statement.code ||
+	 	    Statements.code
+}
+17 Else -> @
+{
+	Else.code = ""
+}
+
+
+18 BExp -> RExp { BExp_1.place = RExp.place
+		  BExp_1.name = RExp.name    } BExp_1
+{
+	BExp.name = BExp_1.name
+	BExp.place = BExp_1.place
+	BExp.code = RExp.code ||
+		    BExp_1.code
+	
+}
+
+19 BExp_1a -> and RExp { BExp_1b.place = newtemp_pred()
+			 BExp_1b.code = RExp.code ||
+			 	gen('&&' BExp_1b ',' BExp_1a ',' RExp)	} BExp_1b
+{
+	BExp_1a.place = BExp_1b.place
+	BExp_1a.name = BExp_1b.name
+	BExp_1a.code = BExp_1b.code
+}
+20 BExp_1 -> or RExp BExp_1
+21 BExp_1 -> @
+
+22 RExp -> not RExp_1
+{
+	RExp.place = RExp_1.place
+	RExp.code = gen('!' [RExp.place].name ',' [RExp_1.place].name)
+}
+
+23 RExp -> RExp_1
+{
+	RExp.place = RExp_1.place
+}
+
+24 RExp_1 -> Exp1 Comp Exp2
+{
+	RExp_1.place = newtemp_pred()
+	RExp_1.code = Exp1.code ||
+		      Exp2.code
+		      
+	gen(Comp [RExp_1.place].name ',' Exp1 ',' Exp2)
+	
+}
+25 RExp_1 -> true
+{
+	RExp_1.place = 1
+}
+26 RExp_1 -> false
+{
+	RExp_1.place = 0
+}
+
+
+
+27 Comp -> =
+{
+	Comp.type = '='
+}
+28 Comp -> <>
+{
+	Comp.type = 'N'
+}
+29 Comp -> <
+{
+	Comp.type = '<'
+}
+30 Comp -> >
+{
+	Comp.type = '>'
+}
+31 Comp -> <=
+{
+	Comp.type = 'L'
+}
+32 Comp -> >=
+{
+	Comp.type = 'G'
+}
+
+
+
+33 Exp -> Term { Exp_1.place = Term.place
+		 Exp_1.code = Term.code
+		 Exp_1.name  = Term.name  } Exp_1
+{
+	Exp.code = Term.code ||
+	           Exp_1.code
+	Exp.place = Exp_1.place
+	Exp.name = Term.name
+}
+34 Exp -> - Term Exp_1
+{
+}
+
+35 Exp_1a -> + Term { Exp_1b.place = newtemp_val()
+		      Exp_1a.code = Term.code ||
+		      	  gen('+' Exp_1b ',' Exp_1a ',' Term) } Exp_1b
+{
+	Exp_1a.place = Exp_1b.place
+	Exp_1a.code ||= Exp_1b.code
+	
+}
+36 Exp_1a -> - Term { Exp_1b.place = newtemp_val()
+		      Exp_1a.code = Term.code ||
+		      	  gen('-' Exp_1b ',' Exp_1a ',' Term) } Exp_1b 
+{
+	Exp_1a.place = Exp_1b.place
+	Exp_1a.code ||= Exp_1b.code	
+}
+37 Exp_1 -> @
+
+
+
+38 Term -> Factor { Term_1.place = Factor.place
+		    Term_1.code = Factor.code
+		    Term_1.name = Factor.name    } Term_1
+{
+	Term.place = Term_1.place
+	Term.code = Term_1.code
+	Term.name = Factor.name
+}
+
+39 Term_1a -> * Factor { Term_1b.place = newtemp_val()
+		  	 Term_1b.code = Factor.code ||
+		  	 	gen('*' Term_1b, Term_1a, Factor  } Term_1b
+{
+	Term_1a.place = Term_1b.place
+	Term_1a.code = Term_1b.code
+}
+40 Term_1a -> / Factor { Term_1b.place = newtemp_val() 
+			 Term_1a.code = Factor.code ||
+			       gen('/' Term_1b, Term_1a, Factor  } Term_1b
+{
+	Term_1a.place = Term_1b.place
+	Term_1a.code ||= Term_1b.code
+}
+41 Term_1 -> @
+
+
+
+42 Factor -> Var
+{
+	Factor.place = Var.place
+	Factor.code = Var.code
+	Factor.name = Var.name
+}
+43 Factor -> num
+{
+	Factor.place = -1
+	Factor.code = ""
+	Factor.name = num.value
+}
+44 Factor -> ( Exp )
+{
+	Factor.code = Exp.code
+	Factor.place = Exp.place
+}
+
+
+
+45 Vars -> Var Vars_1
+{
+	Vars.list = Var.list
+	Append_To_List(Vars.list, Vars_1.list)
+}
+
+46 Vars_1a -> , Var Vars_1b
+{
+	Vars_1a.code = Vars_1b.code
+	Vars_1a = Var.list
+	Append_To_List(Vars_1a, Vars_1b)	
+}
+47 Vars_1 -> @
+{
+	Vars_1.code = ""
+}
+
+
+48 Var -> id Var_1
+{
+	Var.name = id.name
+	Var.index = Var_1.name
+	Var.dtype = id.dtype
+	Var.place = id.place
+	Var.code = Var_1.code
+	//Insert_To_List(Var.list, id.name)
+}
+
+49 Var_1 -> ( Exp )
+{
+	Var_1.name =  Exp.name
+	Var_1.code = Exp.code
+}
+50 Var_1 -> @
+{
+	Var_1.code = ""
+}

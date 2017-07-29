@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////////////
+//
+// programmer: Jose Gifford and Clayton Wong
+// utils.h
+// description: utilities used by lexical analyzer
+//
+//////////////////////////////////////////////////////////////
+
+#ifndef _LEX_UTILS_H_
+#define _LEX_UTILS_H_
+
+#include <lex.h>
+
+//////////////////////////////////////////////////////////////
+// function declarations
+//
+Bool isNumber(char c);
+Bool isLetter(char c);
+Bool isTerminal(char c);
+Bool isWhitespace(char c);
+Bool IsValidWord(Token* tokenToCheck);
+//
+// end function declarations
+//////////////////////////////////////////////////////////////
+
+
+#endif

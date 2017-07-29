@@ -1,0 +1,17 @@
+-- comment
+
+program test;
+
+i : integer;
+
+beginprogram    -- main program 
+
+i := 0;
+
+while i < 10 loop
+	i := i + 1;
+	write i;
+endloop;
+
+endprogram
+

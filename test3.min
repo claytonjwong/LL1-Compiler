@@ -1,0 +1,15 @@
+-- test3.min
+
+program test3;
+
+i : integer;
+
+beginprogram
+
+if i = 0 then
+	i := 1;
+else
+	i := 2;
+endif;
+
+endprogram

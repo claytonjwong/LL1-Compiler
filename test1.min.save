@@ -1,0 +1,17 @@
+ --  test1.min:   compute primes using Sieve of Eratosthenes
+ --
+ --  Compute primes by crossing out multiples of successively larger primes in
+ --  a boolean array.  The array stores a[k]=1 if k ; composite (not prime),
+ --  and a[k]=0 if k ; not divisible by the divisors considered so far.
+
+program test1;
+
+n : array (10) of integer;
+m : integer;
+
+beginprogram	-- main program 
+n := m;
+n(1+2) := m;
+m := 1*2/3*4;
+    -- compute the square root of n and put the result in sqrt_n
+endprogram
