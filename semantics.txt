@@ -1,8 +1,3 @@
-TODO: find out why the fuck "read" and "write" are giving problems
-
-
-TODO: make sure semantic rules are correct for BExp and others
-TODO: make semantic rules for Exp
 
 
 0 Program -> program id ; Block endprogram
